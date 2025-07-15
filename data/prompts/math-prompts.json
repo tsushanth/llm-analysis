@@ -1,0 +1,56 @@
+{
+    "category": "mathematics",
+    "description": "Mathematical problems of varying complexity",
+    "prompts": [
+      {
+        "id": "math_001",
+        "prompt": "Calculate: 156 × 47",
+        "topic": "math",
+        "expectedType": "calculation",
+        "complexity": "simple",
+        "expectedAnswer": "7332",
+        "category": "multiplication",
+        "estimatedTime": "10s"
+      },
+      {
+        "id": "math_002",
+        "prompt": "What is 22% of 180?",
+        "topic": "math",
+        "expectedType": "percentage",
+        "complexity": "simple",
+        "expectedAnswer": "39.6",
+        "category": "percentage",
+        "estimatedTime": "15s"
+      },
+      {
+        "id": "math_003",
+        "prompt": "Find the area of a triangle with base 12 cm and height 8 cm",
+        "topic": "math",
+        "expectedType": "geometry",
+        "complexity": "medium",
+        "expectedAnswer": "48 cm²",
+        "category": "geometry",
+        "estimatedTime": "20s"
+      },
+      {
+        "id": "math_004",
+        "prompt": "Solve the quadratic equation: x² - 5x + 6 = 0",
+        "topic": "math",
+        "expectedType": "algebra",
+        "complexity": "hard",
+        "expectedAnswer": "x = 2 or x = 3",
+        "category": "quadratic_equations",
+        "estimatedTime": "45s"
+      },
+      {
+        "id": "math_005",
+        "prompt": "Calculate the derivative of f(x) = 3x² + 2x - 1",
+        "topic": "math",
+        "expectedType": "calculus",
+        "complexity": "very_hard",
+        "expectedAnswer": "f'(x) = 6x + 2",
+        "category": "calculus",
+        "estimatedTime": "60s"
+      }
+    ]
+  }

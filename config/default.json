@@ -1,0 +1,175 @@
+{
+    "analysis": {
+      "defaultTemperatures": [0.3, 0.7, 1.0],
+      "defaultSamplesPerPrompt": 5,
+      "defaultDuplicateThreshold": 0.75,
+      "maxTokens": 1500,
+      "timeout": 30000,
+      "retryAttempts": 3,
+      "retryDelay": 1000
+    },
+    "models": {
+      "available": [
+        "gpt-4",
+        "gpt-4-turbo", 
+        "gpt-3.5-turbo",
+        "claude-3-sonnet",
+        "gemini-pro",
+        "deepseek"
+      ],
+      "default": "gpt-4",
+      "rotation": true,
+      "costPer1K": {
+        "gpt-4": 0.03,
+        "gpt-4-turbo": 0.01,
+        "gpt-3.5-turbo": 0.002,
+        "claude-3-sonnet": 0.015,
+        "gemini-pro": 0.001,
+        "deepseek": 0.0014
+      }
+    },
+    "embeddings": {
+      "modelName": "Xenova/all-MiniLM-L6-v2",
+      "useCache": true,
+      "cacheSize": 10000,
+      "quantized": true
+    },
+    "validation": {
+      "enableTopicValidation": true,
+      "strictMode": false,
+      "customValidators": {},
+      "thresholds": {
+        "math": 0.6,
+        "language": 0.7,
+        "crossword": 0.4,
+        "programming": 0.5
+      }
+    },
+    "output": {
+      "exportFormat": "json",
+      "includeRawOutputs": false,
+      "compressionEnabled": true,
+      "timestampFormat": "ISO",
+      "precision": 4
+    },
+    "logging": {
+      "level": "info",
+      "includeTimestamps": true,
+      "includeModelInfo": true,
+      "logFailures": true
+    }
+  }
+  
+  // config/test.json
+  {
+    "analysis": {
+      "defaultTemperatures": [0.7],
+      "defaultSamplesPerPrompt": 2,
+      "defaultDuplicateThreshold": 0.8,
+      "maxTokens": 500,
+      "timeout": 10000,
+      "retryAttempts": 1,
+      "retryDelay": 500
+    },
+    "models": {
+      "available": ["gpt-3.5-turbo"],
+      "default": "gpt-3.5-turbo",
+      "rotation": false,
+      "costPer1K": {
+        "gpt-3.5-turbo": 0.002
+      }
+    },
+    "embeddings": {
+      "modelName": "Xenova/all-MiniLM-L6-v2",
+      "useCache": true,
+      "cacheSize": 100,
+      "quantized": true
+    },
+    "validation": {
+      "enableTopicValidation": true,
+      "strictMode": false,
+      "customValidators": {},
+      "thresholds": {
+        "math": 0.5,
+        "language": 0.6,
+        "crossword": 0.3,
+        "programming": 0.4
+      }
+    },
+    "output": {
+      "exportFormat": "json",
+      "includeRawOutputs": true,
+      "compressionEnabled": false,
+      "timestampFormat": "ISO",
+      "precision": 3
+    },
+    "logging": {
+      "level": "debug",
+      "includeTimestamps": true,
+      "includeModelInfo": true,
+      "logFailures": true
+    }
+  }
+  
+  // config/production.json
+  {
+    "analysis": {
+      "defaultTemperatures": [0.3, 0.7, 1.0],
+      "defaultSamplesPerPrompt": 10,
+      "defaultDuplicateThreshold": 0.75,
+      "maxTokens": 2000,
+      "timeout": 60000,
+      "retryAttempts": 5,
+      "retryDelay": 2000
+    },
+    "models": {
+      "available": [
+        "gpt-4",
+        "gpt-4-turbo",
+        "gpt-3.5-turbo",
+        "claude-3-sonnet",
+        "gemini-pro",
+        "deepseek"
+      ],
+      "default": "gpt-4",
+      "rotation": true,
+      "costPer1K": {
+        "gpt-4": 0.03,
+        "gpt-4-turbo": 0.01,
+        "gpt-3.5-turbo": 0.002,
+        "claude-3-sonnet": 0.015,
+        "gemini-pro": 0.001,
+        "deepseek": 0.0014
+      }
+    },
+    "embeddings": {
+      "modelName": "Xenova/all-MiniLM-L6-v2",
+      "useCache": true,
+      "cacheSize": 50000,
+      "quantized": true
+    },
+    "validation": {
+      "enableTopicValidation": true,
+      "strictMode": true,
+      "customValidators": {},
+      "thresholds": {
+        "math": 0.7,
+        "language": 0.8,
+        "crossword": 0.5,
+        "programming": 0.6
+      }
+    },
+    "output": {
+      "exportFormat": "json",
+      "includeRawOutputs": false,
+      "compressionEnabled": true,
+      "timestampFormat": "ISO",
+      "precision": 4
+    },
+    "logging": {
+      "level": "warn",
+      "includeTimestamps": true,
+      "includeModelInfo": false,
+      "logFailures": true
+    }
+  }

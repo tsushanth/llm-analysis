@@ -1,0 +1,51 @@
+{
+    "category": "complex_instructions",
+    "description": "Multi-step, complex instruction following tasks",
+    "prompts": [
+      {
+        "id": "complex_001",
+        "prompt": "Create a 3x3 crossword puzzle with clues about space exploration. Include: 1) A grid with black and white squares, 2) Numbered clues for across and down, 3) All words must be related to space, 4) Format as JSON",
+        "topic": "crossword",
+        "expectedType": "json",
+        "complexity": "very_hard",
+        "category": "structured_generation",
+        "requirements": [
+          "3x3 grid structure",
+          "space-related words only",
+          "valid crossword format",
+          "JSON output",
+          "numbered clues"
+        ]
+      },
+      {
+        "id": "complex_002",
+        "prompt": "Design a database schema for a movie streaming service. Include: 1) User accounts with preferences, 2) Movie catalog with genres and ratings, 3) Viewing history tracking, 4) Recommendation system data, 5) Subscription management, 6) Format as JSON schema",
+        "topic": "programming",
+        "expectedType": "json",
+        "complexity": "very_hard",
+        "category": "system_design",
+        "requirements": [
+          "normalized database design",
+          "relationship definitions",
+          "data validation rules",
+          "JSON schema format",
+          "scalability considerations"
+        ]
+      },
+      {
+        "id": "complex_003",
+        "prompt": "Create a comprehensive meal plan for a week including: 1) 7 days of breakfast, lunch, and dinner, 2) Nutritional balance across meals, 3) Shopping list with quantities, 4) Prep time for each meal, 5) Dietary restrictions noted, 6) Cost estimates per meal",
+        "topic": "meal_planning",
+        "expectedType": "structured_text",
+        "complexity": "hard",
+        "category": "detailed_planning",
+        "requirements": [
+          "21 complete meals",
+          "nutritional balance",
+          "realistic portions",
+          "organized shopping list",
+          "time estimates"
+        ]
+      }
+    ]
+  }

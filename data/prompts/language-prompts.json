@@ -1,0 +1,51 @@
+{
+    "category": "language_tasks",
+    "description": "Language generation and comprehension tasks",
+    "prompts": [
+      {
+        "id": "lang_001",
+        "prompt": "Write a haiku about spring",
+        "topic": "language",
+        "expectedType": "poetry",
+        "complexity": "simple",
+        "category": "creative_writing",
+        "constraints": ["5-7-5 syllable pattern", "nature theme"]
+      },
+      {
+        "id": "lang_002",
+        "prompt": "Explain the water cycle in 3 sentences",
+        "topic": "language",
+        "expectedType": "explanation",
+        "complexity": "medium",
+        "category": "scientific_explanation",
+        "constraints": ["exactly 3 sentences", "accurate scientific content"]
+      },
+      {
+        "id": "lang_003",
+        "prompt": "Write a persuasive paragraph about the importance of reading",
+        "topic": "language",
+        "expectedType": "persuasive",
+        "complexity": "medium",
+        "category": "persuasive_writing",
+        "constraints": ["compelling arguments", "clear structure"]
+      },
+      {
+        "id": "lang_004",
+        "prompt": "Create a dialogue between a customer and a tech support representative",
+        "topic": "language",
+        "expectedType": "dialogue",
+        "complexity": "hard",
+        "category": "conversational_writing",
+        "constraints": ["realistic conversation", "problem resolution"]
+      },
+      {
+        "id": "lang_005",
+        "prompt": "Write instructions for assembling a bookshelf",
+        "topic": "language",
+        "expectedType": "technical",
+        "complexity": "hard",
+        "category": "technical_writing",
+        "constraints": ["clear steps", "logical sequence", "safety considerations"]
+      }
+    ]
+  }

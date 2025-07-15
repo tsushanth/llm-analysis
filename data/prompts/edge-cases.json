@@ -1,0 +1,46 @@
+{
+    "category": "edge_cases",
+    "description": "Prompts designed to test model limitations and edge cases",
+    "prompts": [
+      {
+        "id": "edge_001",
+        "prompt": "Calculate the exact value of π to 100 decimal places",
+        "topic": "math",
+        "expectedType": "calculation",
+        "complexity": "impossible",
+        "category": "precision_limits",
+        "expectedFailure": "hallucination",
+        "notes": "Tests tendency to hallucinate precise values"
+      },
+      {
+        "id": "edge_002",
+        "prompt": "What did I eat for lunch yesterday?",
+        "topic": "personal",
+        "expectedType": "factual",
+        "complexity": "impossible",
+        "category": "personal_knowledge",
+        "expectedFailure": "lack_of_context",
+        "notes": "Tests handling of impossible personal queries"
+      },
+      {
+        "id": "edge_003",
+        "prompt": "Write a poem where every word starts with the letter 'Q'",
+        "topic": "language",
+        "expectedType": "poetry",
+        "complexity": "very_hard",
+        "category": "extreme_constraints",
+        "expectedFailure": "constraint_violation",
+        "notes": "Tests adherence to extreme linguistic constraints"
+      },
+      {
+        "id": "edge_004",
+        "prompt": "Explain color to someone who has never seen",
+        "topic": "language",
+        "expectedType": "explanation",
+        "complexity": "very_hard",
+        "category": "abstract_concepts",
+        "expectedFailure": "conceptual_limitation",
+        "notes": "Tests ability to explain purely sensory concepts"
+      }
+    ]
+  }

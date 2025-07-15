@@ -1,0 +1,46 @@
+{
+    "category": "consistency_testing",
+    "description": "Prompts for testing output consistency across multiple runs",
+    "prompts": [
+      {
+        "id": "consist_001",
+        "prompt": "What is the capital of Japan?",
+        "topic": "factual",
+        "expectedType": "fact",
+        "complexity": "trivial",
+        "category": "basic_facts",
+        "expectedConsistency": "very_high",
+        "correctAnswer": "Tokyo"
+      },
+      {
+        "id": "consist_002",
+        "prompt": "List three primary colors",
+        "topic": "factual",
+        "expectedType": "list",
+        "complexity": "simple",
+        "category": "basic_knowledge",
+        "expectedConsistency": "high",
+        "correctAnswer": ["red", "blue", "yellow"]
+      },
+      {
+        "id": "consist_003",
+        "prompt": "Write a short story about a cat",
+        "topic": "language",
+        "expectedType": "narrative",
+        "complexity": "medium",
+        "category": "creative_writing",
+        "expectedConsistency": "low",
+        "notes": "High variability expected due to creative nature"
+      },
+      {
+        "id": "consist_004",
+        "prompt": "Explain why the sky is blue",
+        "topic": "science",
+        "expectedType": "explanation",
+        "complexity": "medium",
+        "category": "scientific_explanation",
+        "expectedConsistency": "medium",
+        "correctConcept": "Rayleigh scattering"
+      }
+    ]
+  }

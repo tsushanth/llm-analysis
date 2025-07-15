@@ -1,0 +1,44 @@
+{
+  "name": "llm-output-analysis",
+  "version": "1.0.0",
+  "description": "A service for analyzing uniqueness, quality, and cost-effectiveness of LLM outputs",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node src/examples/run-analysis.js",
+    "analyze": "node src/examples/batch-analysis.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "llm",
+    "analysis",
+    "uniqueness",
+    "embeddings",
+    "ai",
+    "machine-learning",
+    "text-similarity",
+    "cost-analysis"
+  ],
+  "author": "Sushanth Tiruvaipati (Kreative Koala LLC)",
+  "license": "MIT",
+  "dependencies": {
+    "@xenova/transformers": "^2.6.0",
+    "cosine-similarity": "^1.0.1",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0",
+    "jest": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/llm-output-analysis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/llm-output-analysis/issues"
+  },
+  "homepage": "https://github.com/your-username/llm-output-analysis#readme"
+}
