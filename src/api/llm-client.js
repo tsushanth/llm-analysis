@@ -28,16 +28,16 @@ class LLMClient {
       case 'claude-3-sonnet':
         return {
           url: "https://api.anthropic.com/v1/messages",
-          model: "claude-3-sonnet-20240229",
+          model: "claude-3-5-sonnet-20241022",
           isAnthropic: true
         };
       
-      case 'gemini-pro':
-        return {
-          url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
-          model: "gemini-pro",
-          isGoogle: true
-        };
+        case 'gemini-pro':
+            return {
+                url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent",
+                model: "gemini-1.5-flash-latest",
+                isGoogle: true
+            };
       
       default:
         return {
@@ -61,7 +61,13 @@ class LLMClient {
           "Content-Type": "application/json"
         };
       
-      default:
+      case 'deepseek':
+        return {
+          "Authorization": `Bearer ${this.apiKeys.deepseek}`,
+          "Content-Type": "application/json"
+        };
+      
+      default: // OpenAI models
         return {
           "Authorization": `Bearer ${this.apiKeys.openai}`,
           "Content-Type": "application/json"
@@ -137,55 +143,65 @@ class LLMClient {
   async callAPI(prompt, modelName, temperature = 0.7, maxTokens = 1500) {
     const startTime = Date.now();
     this.requestCounts[modelName]++;
+    const maxRetries = 3;
     
-    try {
-      const apiConfig = this.getApiConfig(modelName);
-      const headers = this.getHeaders(modelName);
-      const requestBody = this.buildRequestBody(prompt, modelName, temperature, maxTokens);
-      
-      // Handle Google API key in URL
-      const finalUrl = modelName === 'gemini-pro' ? 
-        `${apiConfig.url}?key=${this.apiKeys.google}` : 
-        apiConfig.url;
-      
-      const response = await axios.post(finalUrl, requestBody, {
-        headers,
-        timeout: 30000
-      });
-      
-      const parsedResponse = this.parseResponse(response, modelName);
-      const responseTime = Date.now() - startTime;
-      
-      // Calculate token usage
-      const inputTokens = this.estimateTokenCount(prompt);
-      const outputTokens = this.estimateTokenCount(parsedResponse.text);
-      const totalTokens = inputTokens + outputTokens;
-      
-      return {
-        text: parsedResponse.text,
-        usage: {
-          prompt_tokens: inputTokens,
-          completion_tokens: outputTokens,
-          total_tokens: totalTokens
-        },
-        responseTime,
-        model: modelName,
-        temperature
-      };
-      
-    } catch (error) {
-      this.errorCounts[modelName]++;
-      
-      let errorType = 'unknown';
-      if (error.response) {
-        errorType = `http_${error.response.status}`;
-      } else if (error.code === 'ECONNABORTED') {
-        errorType = 'timeout';
-      } else if (error.code === 'ENOTFOUND') {
-        errorType = 'network';
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const apiConfig = this.getApiConfig(modelName);
+        const headers = this.getHeaders(modelName);
+        const requestBody = this.buildRequestBody(prompt, modelName, temperature, maxTokens);
+        
+        const finalUrl = modelName === 'gemini-pro' ? 
+          `${apiConfig.url}?key=${this.apiKeys.google}` : 
+          apiConfig.url;
+        
+        const response = await axios.post(finalUrl, requestBody, {
+          headers,
+          timeout: 60000
+        });
+        
+        const parsedResponse = this.parseResponse(response, modelName);
+        const responseTime = Date.now() - startTime;
+        
+        const inputTokens = this.estimateTokenCount(prompt);
+        const outputTokens = this.estimateTokenCount(parsedResponse.text);
+        const totalTokens = inputTokens + outputTokens;
+        
+        return {
+          text: parsedResponse.text,
+          usage: {
+            prompt_tokens: inputTokens,
+            completion_tokens: outputTokens,
+            total_tokens: totalTokens
+          },
+          responseTime,
+          model: modelName,
+          temperature
+        };
+        
+      } catch (error) {
+        // Check if we should retry
+        if ((error.code === 'ECONNABORTED' || error.response?.status === 529) && attempt < maxRetries) {
+          const delay = Math.pow(2, attempt) * 1000;
+          console.log(`⏳ ${modelName} error (attempt ${attempt}/${maxRetries}), retrying in ${delay/1000}s...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          continue; // Try again
+        }
+        
+        // Final failure - increment error count and throw
+        this.errorCounts[modelName]++;
+        
+        let errorType = 'unknown';
+        if (error.response) {
+          errorType = `http_${error.response.status}`;
+        } else if (error.code === 'ECONNABORTED') {
+          errorType = 'timeout';
+        } else if (error.code === 'ENOTFOUND') {
+          errorType = 'network';
+        }
+        
+        throw new Error(`${modelName} API Error (${errorType}): ${error.message}`);
       }
-      
-      throw new Error(`${modelName} API Error (${errorType}): ${error.message}`);
     }
   }
 

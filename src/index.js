@@ -4,13 +4,23 @@
 const { pipeline } = require('@xenova/transformers');
 const cosineSimilarity = require('cosine-similarity');
 const crypto = require('crypto');
+const { LLMClient } = require('./api/llm-client.js');
+require('dotenv').config();
 
 class LLMAnalysisService {
   constructor() {
     this.embedder = null;
     this.results = [];
-    this.models = ['gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo', 'claude-3-sonnet', 'gemini-pro', 'deepseek'];
+    this.models = ['gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo', 'gemini-pro', 'deepseek'];
     this.currentModelIndex = 0;
+    
+    // Initialize the LLM client with API keys
+    this.apiClient = new LLMClient({
+      openai: process.env.OPENAI_API_KEY,
+      anthropic: process.env.ANTHROPIC_API_KEY,
+      google: process.env.GOOGLE_API_KEY,
+      deepseek: process.env.DEEPSEEK_API_KEY
+    });
     
     // Cost per 1K tokens (approximate, update with current pricing)
     this.costPer1K = {
@@ -24,6 +34,11 @@ class LLMAnalysisService {
   }
 
   async initialize() {
+    console.log('Environment check:');
+    console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? 'SET' : 'NOT SET');
+    console.log('ANTHROPIC_API_KEY:', process.env.ANTHROPIC_API_KEY ? 'SET' : 'NOT SET');
+    console.log('GOOGLE_API_KEY:', process.env.GOOGLE_API_KEY ? 'SET' : 'NOT SET');
+    console.log('DEEPSEEK_API_KEY:', process.env.DEEPSEEK_API_KEY ? 'SET' : 'NOT SET');
     console.log('🔄 Loading embedding model...');
     this.embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
       quantized: true
@@ -97,22 +112,6 @@ class LLMAnalysisService {
       },
       responseTime: 1000 + Math.random() * 2000 // Mock response time
     };
-  }
-
-  generateMockResponse(prompt, style, temperature) {
-    // Mock response generation with style variations
-    const baseResponse = `Mock response for: ${prompt.substring(0, 50)}...`;
-    const variation = Math.random() * temperature;
-    
-    const styleVariations = {
-      'gpt4_style': `${baseResponse} [GPT-4 detailed analysis with ${variation.toFixed(2)} creativity]`,
-      'gpt35_style': `${baseResponse} [GPT-3.5 concise response with ${variation.toFixed(2)} variation]`,
-      'claude_style': `${baseResponse} [Claude thoughtful approach with ${variation.toFixed(2)} nuance]`,
-      'gemini_style': `${baseResponse} [Gemini structured response with ${variation.toFixed(2)} precision]`,
-      'deepseek_style': `${baseResponse} [DeepSeek efficient response with ${variation.toFixed(2)} focus]`
-    };
-    
-    return styleVariations[style] || baseResponse;
   }
 
   estimateTokenCount(text) {
@@ -517,6 +516,7 @@ class LLMAnalysisService {
           const modelName = useRotation ? this.getNextModel() : 'gpt-4';
           
           try {
+            if (i > 0) await new Promise(resolve => setTimeout(resolve, 1000));
             const startRequestTime = Date.now();
             const result = await this.callLLMAPI(prompt, modelName, temperature);
             const requestTime = Date.now() - startRequestTime;
