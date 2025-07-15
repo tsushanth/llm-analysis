@@ -29,17 +29,46 @@ We explore simple yet effective strategies to amplify uniqueness:
 \end{itemize}
 
 \section{System Architecture}
-Our Node.js service supports multiple LLMs, rotating across APIs, collecting responses, validating uniqueness using MiniLM embeddings, and tracking cost. Duplicate detection uses structural JSON checks and embedding similarity scoring.
+Our Node.js service maintains a rotating pool of models, accepts prompts, validates uniqueness using MiniLM embeddings, and tracks cost. Deduplication combines structural matching and embedding similarity thresholds.
 
 \section{Methodology}
 \begin{itemize}
   \item \textbf{Temperature Sweeps:} Range from 0.1 to 1.3
   \item \textbf{Model Rotation:} Round-robin sampling across LLMs
   \item \textbf{Uniqueness Metric:} Cosine distance of sentence embeddings
-  \item \textbf{Cost Tracking:} Price-normalized token accounting
+  \item \textbf{Cost Tracking:} Token-based billing estimation
 \end{itemize}
 
 \section{Results}
+\subsection*{Prompt Type Analysis: Science + Math @ Temp=0.7}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Model & Avg Validation & Avg Cost (\$) & Efficiency \\
+\midrule
+GPT-4 & 0.311 & 0.0034 & 92.7 \\
+GPT-4-Turbo & 0.630 & 0.0030 & 212.4 \\
+GPT-3.5-Turbo & 0.566 & 0.0003 & 1887.4 \\
+Gemini-Pro & 0.547 & 0.0001 & 4100.0 \\
+DeepSeek & 0.666 & 0.0004 & 1537.2 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Complexity Analysis (Trivial to Very Hard)}
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Task Complexity & Validation & Cost (\$) & Efficiency & Notes \\
+\midrule
+Trivial (Math) & 0.2500 & 0.0001 & 2851.7 & GPT-4-Turbo best \\
+Medium (Math) & 0.6667 & 0.0008 & 837.9 & GPT-4-Turbo excels \\
+Hard (Math) & 0.6333 & 0.0012 & 529.8 & GPT-3.5-Turbo shines \\
+Very Hard (Crossword) & 0.1000 & 0.0011 & 92.1 & Gemini leads despite low score \\
+\bottomrule
+\end{tabular}
+\end{center}
+
 \subsection*{Temperature vs Creativity (GPT-4)}
 \begin{center}
 \begin{tabular}{lcccccc}
@@ -64,11 +93,45 @@ Temperature & Uniqueness & Validation & Duplicates & Cost (\$) & Efficiency \\
   \label{fig:temperature_plot}
 \end{figure}
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\linewidth]{complexity_plot.png}
+    \caption{Task Complexity vs Validation and Efficiency}
+    \label{fig:complexity_plot}
+  \end{figure}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\linewidth]{validation_vs_cost.png}
+    \caption{Cost of Validation}
+    \label{fig:validation_vs_cost}
+  \end{figure}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\linewidth]{efficiency_vs_complexity.png}
+    \caption{Efficiency vs Complexity}
+    \label{fig:efficiency_vs_complexity}
+  \end{figure}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\linewidth]{cost_vs_temperature.png}
+    \caption{Cost vs Temperature}
+    \label{fig:cost_vs_temperature}
+  \end{figure}
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\linewidth]{uniqueness_vs_temperature.png}
+    \caption{Uniqueness vs Temperature}
+    \label{fig:uniqueness_vs_temperature}
+  \end{figure}
 \section{Discussion}
-Model rotation improves diversity beyond temperature tuning alone. Embedding-based scoring proves useful for rapid validation. The best trade-off between creativity and cost appears at temperatures between 0.7–0.9. Our system is efficient and extensible for production use.
+Model rotation significantly enhances uniqueness beyond temperature tuning alone. Our validation and deduplication methods (embedding-based, thresholded) help score outputs in real-time. DeepSeek and GPT-3.5-Turbo provide the best cost-to-creativity ratio. Gemini-Pro leads in efficiency but performs poorly on high-complexity tasks.
 
 \section{Conclusion}
-We enhance LLM output uniqueness using simple strategies such as temperature tuning and model rotation. These methods yield measurable improvements in uniqueness while keeping cost and quality within acceptable limits. Our framework, metrics, and results are open-sourced for further experimentation.
+Our framework boosts LLM uniqueness while remaining simple, effective, and low-cost. Combining rotation, temperature tuning, and cosine-based validation yields measurable improvements across tasks of increasing complexity.
 
 \section*{References}
 \begin{itemize}
